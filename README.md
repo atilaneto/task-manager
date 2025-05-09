@@ -4,7 +4,7 @@ Este é um sistema web desenvolvido com Node.js e Express.js para o gerenciament
 
 O objetivo deste projeto é criar uma aplicação que eu realmente possa utilizar no meu dia a dia para organizar compromissos da minha empresa, reuniões com clientes, estudos, metas e grandes objetivos. Apesar de atualmente utilizar o Notion, percebo que a enorme quantidade de funcionalidades da plataforma acaba tornando a organização das minhas tarefas mais complexa do que o necessário. Com isso, busco desenvolver uma solução mais enxuta, eficiente e personalizada para as minhas necessidades.
 
-## 🗂 Estrutura de Pastas
+## Estrutura de Pastas
 
 ```markdown
 webapp/
@@ -71,7 +71,7 @@ webapp/
    http://localhost:3000
    ```
 
-## 🛠 Tecnologias utilizadas
+## Tecnologias utilizadas
 
 * Node.js
 * Express.js
@@ -80,7 +80,7 @@ webapp/
 * Dotenv
 * MVC Pattern
 
-## 🧩 Modelo de Banco de Dados
+## Modelo de Banco de Dados
 
 * Entidades principais:
 
@@ -92,6 +92,6 @@ webapp/
 
 * O modelo relacional (diagrama visual) está em [`docs/modelo-banco.png`](docs/modelo-banco.png)
 
-## 🧾 Licença
+## Licença
 
 Este projeto é acadêmico, faz parte da disciplina de Computação do Módulo 2 do Instituto de Tecnologia e Liderança (Inteli).
