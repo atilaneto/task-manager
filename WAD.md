@@ -89,7 +89,7 @@ O banco de dados foi modelado para representar de forma clara as entidades princ
 ![Modelo Relacional](docs/modelo-banco.png)
 
 - Modelo físico em SQL:  
-  [`docs/modelo-banco.sql`](docs/task-manager-diagram.sql)
+  [`docs/modelo-banco.sql`](docs/modelo-banco.sql)
 
 #### Resumo da estrutura:
 
