@@ -1,40 +1,39 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const db = require('./config/db');
 const path = require('path');
+const db = require('./config/db');
+const routes = require('./routes');
+const userRoutes = require('./routes/userRoutes');
+const frontendRoutes = require('./routes/frontRoutes');
 
+//middleware deve vir antes de qualquer rota, demorei para entender
+app.use(express.json());
+
+//view engine (ok aqui)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-db.connect()
-  .then(() => {
-    console.log('Conectado ao banco de dados PostgreSQL');
+//rotas da API
+app.use('/api', routes);
 
-    app.use(express.json());
+//outras rotas
+app.use('/users', userRoutes);
+app.use('/', frontendRoutes);
 
-    const userRoutes = require('./routes/userRoutes');
-    app.use('/users', userRoutes);
+//404
+app.use((req, res, next) => {
+  res.status(404).send('Página não encontrada');
+});
 
-    const frontendRoutes = require('./routes/frontRoutes');
-    app.use('/', frontendRoutes);
+//erro interno
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Erro no servidor');
+});
 
-    // Middleware para lidar com erros de rota não encontrada
-    app.use((req, res, next) => {
-      res.status(404).send('Página não encontrada');
-    });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
 
-    // Middleware para lidar com erros internos do servidor
-    app.use((err, req, res, next) => {
-      console.error(err.stack);
-      res.status(500).send('Erro no servidor');
-    });
-
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Servidor rodando na porta ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('Erro ao conectar ao banco de dados:', err);
-  });
