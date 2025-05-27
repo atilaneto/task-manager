@@ -151,4 +151,3 @@ http://localhost:3000/api/tarefas
 ## 🧾 Licença
 
 Este projeto é acadêmico, faz parte da disciplina de Computação do Módulo 2 do Instituto de Tecnologia e Liderança (Inteli).
-sfwef
