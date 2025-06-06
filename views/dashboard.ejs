@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            prata: '#c0c0c0',
+            azulEscuro: '#0f172a',
+            amarelo: '#facc15',
+            verde: '#4ade80'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-azulEscuro text-white font-sans min-h-screen p-6">
+
+  <h1 class="text-4xl font-bold text-center mb-8">Minha Dashboard</h1>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <div>
+      <h2 class="text-xl font-semibold mb-4 text-prata">A Fazer</h2>
+      <ul id="afazer" class="space-y-3"></ul>
+    </div>
+    <div>
+      <h2 class="text-xl font-semibold mb-4 text-amarelo">Em Andamento</h2>
+      <ul id="emAndamento" class="space-y-3"></ul>
+    </div>
+    <div>
+      <h2 class="text-xl font-semibold mb-4 text-verde">Concluído</h2>
+      <ul id="concluido" class="space-y-3"></ul>
+    </div>
+  </div>
+
+  <script>
+    async function carregarTarefas() {
+      const res = await fetch('/api/tasks');
+      const tarefas = await res.json();
+
+      const afazer = document.getElementById('afazer');
+      const emAndamento = document.getElementById('emAndamento');
+      const concluido = document.getElementById('concluido');
+
+      afazer.innerHTML = '';
+      emAndamento.innerHTML = '';
+      concluido.innerHTML = '';
+
+      tarefas.forEach(tarefa => {
+        const li = document.createElement('li');
+        li.className = 'bg-gray-800 p-4 rounded-lg shadow';
+        li.innerHTML = `
+          <h3 class="text-lg font-bold">${tarefa.nome}</h3>
+          <p class="text-sm text-prata">${tarefa.descricao}</p>
+        `;
+
+        switch (tarefa.status) {
+          case 'em andamento':
+            emAndamento.appendChild(li);
+            break;
+          case 'concluído':
+          case 'concluido':
+            concluido.appendChild(li);
+            break;
+          default:
+            afazer.appendChild(li);
+        }
+      });
+    }
+
+    carregarTarefas();
+  </script>
+
+</body>
+</html>

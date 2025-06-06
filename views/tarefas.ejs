@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            prata: '#c0c0c0',
+            azulEscuro: '#0f172a'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-azulEscuro text-prata font-sans min-h-screen flex items-center justify-center px-4">
+
+  <div class="w-full max-w-2xl p-8 bg-gray-900 rounded-2xl shadow-lg fade-in">
+    <h1 class="text-3xl font-bold text-white mb-6 text-center">Gerenciador de Tarefas</h1>
+
+    <ul id="lista-tarefas" class="space-y-4">
+      <!-- tarefas serão injetadas via JS -->
+    </ul>
+
+    <form id="form-tarefa" class="mt-10 space-y-4">
+      <input type="text" id="nome" placeholder="Nome da tarefa" class="w-full px-4 py-3 bg-gray-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      <input type="text" id="descricao" placeholder="Descrição" class="w-full px-4 py-3 bg-gray-800 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 transition-all duration-300 rounded-lg text-white font-semibold">Adicionar Tarefa</button>
+    </form>
+  </div>
+
+  <script>
+    async function carregarTarefas() {
+      const res = await fetch('/api/tasks');
+      const tarefas = await res.json();
+      const lista = document.getElementById('lista-tarefas');
+      lista.innerHTML = '';
+
+      tarefas.forEach(tarefa => {
+        const li = document.createElement('li');
+        li.className = 'p-4 bg-gray-800 rounded-lg shadow hover:shadow-xl transition-all duration-300';
+        li.innerHTML = `
+          <h2 class="text-lg font-semibold text-white">${tarefa.nome}</h2>
+          <p class="text-sm text-prata">${tarefa.descricao}</p>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    document.getElementById('form-tarefa').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const descricao = document.getElementById('descricao').value;
+
+      await fetch('/api/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, descricao })
+      });
+
+      document.getElementById('form-tarefa').reset();
+      carregarTarefas();
+    });
+
+    carregarTarefas();
+  </script>
+
+</body>
+</html>
