@@ -1,153 +1,92 @@
-# Task Manager — Projeto Individual (Módulo 2, Parte II de Computação)
+# Task Manager — Projeto Individual (COMP Parte 3)
 
-Este é um sistema web desenvolvido com Node.js e Express.js para o gerenciamento de tarefas. O projeto segue o padrão arquitetural MVC (Model-View-Controller), conforme orientado pelo professor Bryan Ferreira, com integração ao banco de dados PostgreSQL e estrutura modular que permite o desenvolvimento completo da aplicação e testes com API REST.
+Este é um sistema completo de gerenciamento de tarefas, inspirado no Notion, com múltiplas views visuais, backend Node.js, banco de dados PostgreSQL, e estrutura baseada no padrão MVC.
 
-O objetivo deste projeto é criar uma aplicação que eu realmente possa utilizar no meu dia a dia para organizar compromissos da minha empresa, reuniões com clientes, estudos, metas e grandes objetivos. Apesar de atualmente utilizar o Notion, percebo que a enorme quantidade de funcionalidades da plataforma acaba tornando a organização das minhas tarefas mais complexa do que o necessário. Com isso, busco desenvolver uma solução mais enxuta, eficiente e personalizada para as minhas necessidades.
+## Como executar o projeto
 
----
-
-## Fundamentação Técnica
-
-Este projeto visa aplicar os principais conceitos da integração backend com banco de dados utilizando:
-
-- **PostgreSQL** como banco de dados relacional
-- **pg** como cliente SQL para Node.js
-- **Arquitetura MVC** (Model, View, Controller)
-- **Endpoints RESTful** utilizando Express.js
-
----
-
-## Integração com Banco de Dados
-
-A conexão com o banco é configurada no arquivo `.env` para garantir segurança e portabilidade. O sistema permite:
-
-- Leitura de dados salvos no banco (GET)
-- Inserção de novos registros (POST)
-- Atualização de registros existentes (PUT)
-- Remoção de dados (DELETE)
-
----
-
-## Migrações
-
-As migrações são feitas com SQL puro, através do arquivo `migrations/init.sql`. Para executar:
+### 1. Clone o repositório
 
 ```bash
-npm run init-db
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
 ````
 
-Isso executa um script JS que aplica os comandos SQL contidos no arquivo.
-
----
-
-## Controllers e Rotas
-
-As funções que manipulam os dados estão organizadas nos arquivos da pasta `controllers/`. As rotas estão declaradas em `routes/index.js` e conectam os endpoints aos controllers.
-
-Exemplo de rota:
-
-```js
-router.get('/tarefas', TarefaController.listarTarefas);
-```
-
----
-
-## Estrutura de Pastas
-
-```markdown
-webapp/
-├── assets/           # Arquivos estáticos como imagens e fontes
-├── configs/          # Arquivos de configuração (ex: conexão com o banco)
-├── controllers/      # Lógica de controle das requisições
-├── docs/             # Documentação e modelos do banco de dados
-│   ├── modelo-banco.sql
-│   └── modelo-banco.png
-├── models/           # Definição dos modelos de dados
-├── node_modules/     # Módulos do Node.js
-├── routes/           # Definição de rotas
-├── scripts/          # Scripts públicos e de migração
-├── services/         # Serviços auxiliares
-├── styles/           # Arquivos CSS públicos
-├── tests/            # Testes automatizados
-├── .env.example      # Exemplo de variáveis de ambiente
-├── .gitignore
-├── package.json
-├── package-lock.json
-├── readme.md
-├── WAD.md
-├── server.js
-```
-
----
-
-## Como executar o projeto localmente
-
-1. **Clone o repositório:**
-
-```bash
-git clone https://github.com/atilaneto/task-manager.git
-cd task-manager
-```
-
-2. **Instale as dependências:**
+### 2. Instale as dependências
 
 ```bash
 npm install
 ```
 
-3. **Configure o ambiente:**
+### 3. Configure o banco de dados
 
-Crie um `.env` com base em `.env.example` e preencha com os dados do seu banco:
+Crie um banco PostgreSQL com o nome `tasks_manager` e configure as variáveis no arquivo `.env`:
 
-```env
-DB_USER=postgres
-DB_PASSWORD=suaSenha
+```
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=task_manager
-PORT=3000
+DB_USER=postgres
+DB_PASSWORD=sua_senha
+DB_NAME=tasks_manager
 ```
 
-4. **Rode a migração:**
+Crie a tabela `tasks` com o seguinte comando:
 
-```bash
-npm run init-db
+```sql
+CREATE TABLE tasks (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(255),
+  descricao TEXT,
+  status VARCHAR(20) DEFAULT 'pendente',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
-5. **Inicie o servidor:**
+### 4. Inicie o servidor
 
 ```bash
 npm run dev
 ```
 
-6. **Acesse no navegador ou use Postman/cURL:**
+Acesse no navegador: [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 📁 Estrutura do Projeto
 
 ```
-http://localhost:3000/api/tarefas
+.
+├── config/            # Conexão com o banco de dados
+├── controllers/       # Lógica de negócio (ex: criação/edição de tarefas)
+├── models/            # Interações com o banco (queries SQL)
+├── routes/            # Rotas da aplicação (API e frontend)
+├── views/             # Arquivos .ejs com as interfaces visuais
+├── public/            # Arquivos estáticos (se necessário)
+├── server.js          # Arquivo principal do servidor Express
+├── .env               # Variáveis de ambiente (não subir no GitHub)
+├── README.md
+└── WAD.md
 ```
 
 ---
 
-## Endpoints REST implementados
+## Principais Rotas e Views
 
-| Método | Rota              | Descrição                   |
-| ------ | ----------------- | --------------------------- |
-| GET    | /api/tarefas      | Listar todas as tarefas     |
-| POST   | /api/tarefas      | Criar uma nova tarefa       |
-| PUT    | /api/tarefas/\:id | Editar uma tarefa existente |
-| DELETE | /api/tarefas/\:id | Excluir uma tarefa          |
+* `/` → Menu principal com links
+* `/tarefas` → Gerenciador de tarefas (adicionar e listar)
+* `/dashboard` → Visão geral do sistema
+* `/projeto/:id` → Visualização de projeto com tarefas organizadas
+* `/editor/:id` → Editor de blocos (visual estilo Notion)
+* `/tags` → Visualizador de categorias/tags
+* `/foco/:id` → Tela de modo foco (visualização individual de tarefa)
 
 ---
 
-## Modelo de Banco de Dados
+## Desenvolvido por
 
-* Entidade principal: `tasks`
-* Script SQL disponível em `docs/modelo-banco.sql`
-* Diagrama relacional disponível em `docs/modelo-banco.png`
-* Diagrama de Arquitetura MVC disponível em `docs/MVC-diagram.png`
----
-
-
-## 🧾 Licença
+**Átila Neto**
+Ciência da Computação — Inteli
+2025 — Projeto Individual da disciplina de Computação (COMP Parte 3)
+Licença
 
 Este projeto é acadêmico, faz parte da disciplina de Computação do Módulo 2 do Instituto de Tecnologia e Liderança (Inteli).

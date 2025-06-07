@@ -144,7 +144,7 @@ http://localhost:3000/api/tarefas
 * Entidade principal: `tasks`
 * Script SQL disponível em `docs/modelo-banco.sql`
 * Diagrama relacional disponível em `docs/modelo-banco.png`
-* Diagrama de Arquitetura MVC disponível em `docs/MVC-diagram.png`
+* Diagrama de Arquitetura MVC disponível em `docs/mvc-architecture.png`
 ---
 
 
