@@ -1,4 +1,4 @@
-# Task Manager — Projeto Individual (COMP Parte 3)
+# Task Manager — Projeto Individual de Computação do Módulo II
 
 Este é um sistema completo de gerenciamento de tarefas, inspirado no Notion, com múltiplas views visuais, backend Node.js, banco de dados PostgreSQL, e estrutura baseada no padrão MVC.
 
