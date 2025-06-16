@@ -1,48 +1,56 @@
-# Task Manager — Projeto Individual de Computação do Módulo II
+# Task Manager — Projeto Individual de Computação
 
-Este é um sistema completo de gerenciamento de tarefas, inspirado no Notion, com múltiplas views visuais, backend Node.js, banco de dados PostgreSQL, e estrutura baseada no padrão MVC.
+Sistema web completo para gestão de tarefas pessoais, com interface moderna inspirada no Notion.
 
-## Como executar o projeto
+## Funcionalidades
 
-### 1. Clone o repositório
+- Cadastro, listagem e exclusão de tarefas
+- Dashboard com colunas: A Fazer, Em Andamento, Concluído
+- Modo Foco: exibe uma tarefa aleatória para concentração
+- Filtros por categorias (tags)
+- Editor de blocos com conteúdo livre
+- Página de Projeto com visão geral das tarefas
+
+---
+
+## Tecnologias Utilizadas
+
+- Node.js + Express
+- PostgreSQL (via `pg`)
+- EJS como engine de views
+- Tailwind CSS para estilização
+- Express-EJS-Layouts para layout base
+- JavaScript (Fetch API) para consumo de rotas REST
+
+---
+
+## Como Executar Localmente
+
+### Pré-requisitos
+- Node.js instalado
+- PostgreSQL instalado e configurado
+
+### Passos
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
+git clone https://github.com/atilaneto/task-manager.git
+cd task-manager
+npm install
 ````
 
-### 2. Instale as dependências
+Crie um arquivo `.env` com os seguintes dados:
 
-```bash
-npm install
-```
-
-### 3. Configure o banco de dados
-
-Crie um banco PostgreSQL com o nome `tasks_manager` e configure as variáveis no arquivo `.env`:
-
-```
+```env
+DB_NAME=tasks_manager
+DB_USER=postgres
+DB_PASSWORD=mac55-STAR
 DB_HOST=localhost
 DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=sua_senha
-DB_NAME=tasks_manager
+DB_SSL=false
+PORT=3000
 ```
 
-Crie a tabela `tasks` com o seguinte comando:
-
-```sql
-CREATE TABLE tasks (
-  id SERIAL PRIMARY KEY,
-  nome VARCHAR(255),
-  descricao TEXT,
-  status VARCHAR(20) DEFAULT 'pendente',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-### 4. Inicie o servidor
+Execute o servidor:
 
 ```bash
 npm run dev
@@ -52,41 +60,73 @@ Acesse no navegador: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 📁 Estrutura do Projeto
+## Imagens do Sistema
+
+### Menu Principal
+
+![Menu](./menu.png)
+
+### Dashboard
+
+![Dashboard](./dashboard.png)
+
+### Modo Foco
+
+![Foco](./foco.png)
+
+---
+
+## Vídeo de Demonstração
+
+Link para o vídeo: [Acessar demonstração](https://www.loom.com/share/49a477f320b249a2aafd0ba330498337?sid=35706903-b8d4-4d93-9b3f-3c2b74373eae)
+
+O vídeo apresenta o sistema funcionando localmente, com explicações sobre sua estrutura, funcionamento e decisões técnicas.
+
+---
+
+## Estrutura do Projeto
 
 ```
-.
-├── config/            # Conexão com o banco de dados
-├── controllers/       # Lógica de negócio (ex: criação/edição de tarefas)
-├── models/            # Interações com o banco (queries SQL)
-├── routes/            # Rotas da aplicação (API e frontend)
-├── views/             # Arquivos .ejs com as interfaces visuais
-├── public/            # Arquivos estáticos (se necessário)
-├── server.js          # Arquivo principal do servidor Express
-├── .env               # Variáveis de ambiente (não subir no GitHub)
+task-manager/
+├── config/           # Conexão com o banco
+├── controllers/      # Lógica das rotas da API
+├── models/           # Consultas ao PostgreSQL
+├── routes/
+│   ├── index.js      # Rotas da API
+│   └── frontRoutes.js
+├── views/            # Views com layout base
+│   ├── partials/     # head, header, footer
+├── public/           # Arquivos públicos (se usados)
+├── .env.example      # Exemplo de variáveis de ambiente
 ├── README.md
-└── WAD.md
+├── WAD.md
+├── package.json
+├── server.js
 ```
 
 ---
 
-## Principais Rotas e Views
+## Aprendizados e Desafios
 
-* `/` → Menu principal com links
-* `/tarefas` → Gerenciador de tarefas (adicionar e listar)
-* `/dashboard` → Visão geral do sistema
-* `/projeto/:id` → Visualização de projeto com tarefas organizadas
-* `/editor/:id` → Editor de blocos (visual estilo Notion)
-* `/tags` → Visualizador de categorias/tags
-* `/foco/:id` → Tela de modo foco (visualização individual de tarefa)
+Durante o desenvolvimento, enfrentei desafios importantes com o uso incorreto de layouts em EJS, o que gerava erros nas views. Resolvi isso padronizando o uso de `express-ejs-layouts` e removendo dependências desnecessárias como `layout('layout')`.
+
+Também lidei com erros HTTP 500 causados por views ausentes ou variáveis indefinidas no render, e conflitos de versionamento no Git, que foram resolvidos com `pull --rebase` e `rebase --continue`.
+
+A separação em MVC, o uso de layout base e o consumo da API com fetch foram pontos técnicos importantes que solidifiquei neste projeto.
 
 ---
 
-## Desenvolvido por
+## Autor
 
-**Átila Neto**
-Ciência da Computação — Inteli
-2025 — Projeto Individual da disciplina de Computação (COMP Parte 3)
-Licença
+Átila Neto
+Estudante de Ciência da Computação — Inteli
+GitHub: [@atilaneto](https://github.com/atilaneto)
 
-Este projeto é acadêmico, faz parte da disciplina de Computação do Módulo 2 do Instituto de Tecnologia e Liderança (Inteli).
+---
+
+## Licença
+
+Este projeto foi desenvolvido exclusivamente para fins acadêmicos como parte da disciplina de Computação — Módulo 2 do Instituto de Tecnologia e Liderança (Inteli).
+
+O código está disponível apenas para fins educacionais e não deve ser utilizado em aplicações comerciais sem autorização prévia.
+
