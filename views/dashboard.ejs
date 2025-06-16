@@ -1,84 +1,69 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            prata: '#c0c0c0',
-            azulEscuro: '#0f172a',
-            amarelo: '#facc15',
-            verde: '#4ade80'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
-</head>
-<body class="bg-azulEscuro text-white font-sans min-h-screen p-6">
+<% title = 'Dashboard' %>
 
-  <h1 class="text-4xl font-bold text-center mb-8">Minha Dashboard</h1>
+<section class="max-w-7xl mx-auto">
+  <h1 class="text-4xl font-extrabold text-white text-center mb-10 tracking-tight">Minha Dashboard</h1>
 
-  <div class="grid md:grid-cols-3 gap-6">
-    <div>
-      <h2 class="text-xl font-semibold mb-4 text-prata">A Fazer</h2>
-      <ul id="afazer" class="space-y-3"></ul>
+  <div class="grid gap-6 md:grid-cols-3">
+    <!-- Coluna A FAZER -->
+    <div class="bg-gray-900 rounded-xl shadow-lg p-6 flex flex-col">
+      <h2 class="text-2xl font-semibold text-prata mb-4">A Fazer</h2>
+      <ul id="afazer" class="space-y-4 flex-1 overflow-auto"></ul>
     </div>
-    <div>
-      <h2 class="text-xl font-semibold mb-4 text-amarelo">Em Andamento</h2>
-      <ul id="emAndamento" class="space-y-3"></ul>
+
+    <!-- Coluna EM ANDAMENTO -->
+    <div class="bg-gray-900 rounded-xl shadow-lg p-6 flex flex-col">
+      <h2 class="text-2xl font-semibold text-amarelo mb-4">Em Andamento</h2>
+      <ul id="emAndamento" class="space-y-4 flex-1 overflow-auto"></ul>
     </div>
-    <div>
-      <h2 class="text-xl font-semibold mb-4 text-verde">Concluído</h2>
-      <ul id="concluido" class="space-y-3"></ul>
+
+    <!-- Coluna CONCLUÍDO -->
+    <div class="bg-gray-900 rounded-xl shadow-lg p-6 flex flex-col">
+      <h2 class="text-2xl font-semibold text-verde mb-4">Concluído</h2>
+      <ul id="concluido" class="space-y-4 flex-1 overflow-auto"></ul>
     </div>
   </div>
+</section>
 
-  <script>
-    async function carregarTarefas() {
-      const res = await fetch('/api/tasks');
-      const tarefas = await res.json();
+<script>
+  async function carregarTarefas() {
+    const res = await fetch('/api/tasks');
+    const tarefas = await res.json();
 
-      const afazer = document.getElementById('afazer');
-      const emAndamento = document.getElementById('emAndamento');
-      const concluido = document.getElementById('concluido');
+    const afazer = document.getElementById('afazer');
+    const emAndamento = document.getElementById('emAndamento');
+    const concluido = document.getElementById('concluido');
 
-      afazer.innerHTML = '';
-      emAndamento.innerHTML = '';
-      concluido.innerHTML = '';
+    afazer.innerHTML = '';
+    emAndamento.innerHTML = '';
+    concluido.innerHTML = '';
 
-      tarefas.forEach(tarefa => {
-        const li = document.createElement('li');
-        li.className = 'bg-gray-800 p-4 rounded-lg shadow';
-        li.innerHTML = `
-          <h3 class="text-lg font-bold">${tarefa.nome}</h3>
-          <p class="text-sm text-prata">${tarefa.descricao}</p>
-        `;
+    tarefas.forEach(tarefa => {
+      const li = document.createElement('li');
+      li.className = `
+        bg-gray-800 hover:bg-gray-700 transition duration-200 p-4 rounded-lg shadow 
+        border border-gray-700 hover:border-blue-500 group
+      `;
+      li.innerHTML = `
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-semibold text-white group-hover:text-blue-400">${tarefa.nome}</h3>
+          <span class="text-xs text-gray-400 italic">${tarefa.status}</span>
+        </div>
+        <p class="text-sm text-prata mt-1">${tarefa.descricao}</p>
+      `;
 
-        switch (tarefa.status) {
-          case 'em andamento':
-            emAndamento.appendChild(li);
-            break;
-          case 'concluído':
-          case 'concluido':
-            concluido.appendChild(li);
-            break;
-          default:
-            afazer.appendChild(li);
-        }
-      });
-    }
+      switch (tarefa.status?.toLowerCase()) {
+        case 'em andamento':
+          emAndamento.appendChild(li);
+          break;
+        case 'concluído':
+        case 'concluido':
+          concluido.appendChild(li);
+          break;
+        default:
+          afazer.appendChild(li);
+      }
+    });
+  }
 
-    carregarTarefas();
-  </script>
-
-</body>
-</html>
+  carregarTarefas();
+</script>

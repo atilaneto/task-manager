@@ -1,67 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Editor de Blocos</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            prata: '#c0c0c0',
-            azulEscuro: '#0f172a'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif']
-          },
-        }
-      }
-    }
-  </script>
-  <style>
-    .fade-in {
-      animation: fadeIn 0.6s ease-out both;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .block-placeholder::before {
-      content: attr(data-placeholder);
-      color: #aaa;
-      pointer-events: none;
-    }
-  </style>
-</head>
-<body class="bg-azulEscuro text-prata font-sans min-h-screen p-8">
+<% title = 'Editor de Blocos' %>
 
-  <div class="max-w-4xl mx-auto bg-gray-900 rounded-xl shadow-lg p-10 fade-in">
-    <h1 class="text-3xl font-bold text-white mb-6 text-center">Editor de Blocos</h1>
+<section class="max-w-4xl mx-auto bg-gray-900 rounded-xl shadow-lg p-10 fade-in">
+  <h1 class="text-3xl font-bold text-white mb-6 text-center">Editor de Blocos</h1>
 
-    <div id="editor" class="space-y-4">
-      <!-- Blocos inseridos aqui -->
-    </div>
-
-    <div class="mt-6 text-center">
-      <button onclick="addBlock()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-all duration-300">
-        Adicionar Bloco
-      </button>
-    </div>
+  <div id="editor" class="space-y-4">
+    <!-- Blocos dinâmicos -->
   </div>
 
-  <script>
-    function addBlock() {
-      const editor = document.getElementById('editor');
-      const block = document.createElement('div');
-      block.contentEditable = true;
-      block.className = 'w-full min-h-[60px] px-4 py-3 bg-gray-800 rounded-lg text-white outline-none focus:ring-2 focus:ring-blue-500 block-placeholder';
-      block.setAttribute('data-placeholder', 'Digite algo aqui...');
-      editor.appendChild(block);
-      block.focus();
-    }
-  </script>
+  <div class="mt-6 text-center">
+    <button onclick="addBlock()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-all duration-300">
+      Adicionar Bloco
+    </button>
+  </div>
+</section>
 
-</body>
-</html>
+<script>
+  function addBlock() {
+    const editor = document.getElementById('editor');
+    const block = document.createElement('div');
+    block.contentEditable = true;
+    block.className = `
+      w-full min-h-[60px] px-4 py-3 bg-gray-800 rounded-lg text-white 
+      outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 transition
+    `;
+    block.setAttribute('data-placeholder', 'Digite algo aqui...');
+    editor.appendChild(block);
+    block.focus();
+  }
+</script>

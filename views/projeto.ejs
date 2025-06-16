@@ -1,52 +1,16 @@
-<!-- views/projeto.ejs -->
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projeto • Task Manager</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            prata: '#c0c0c0',
-            azulEscuro: '#0f172a',
-            fundo: '#1e293b',
-            cartao: '#334155'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif']
-          },
-        }
-      }
-    }
-  </script>
-</head>
-<body class="bg-fundo text-prata font-sans min-h-screen flex flex-col">
-  <!-- Barra superior -->
-  <header class="p-6 bg-azulEscuro shadow-md">
-    <h1 class="text-2xl font-bold text-white">Projeto: <%= projetoNome || 'Sem nome' %></h1>
-  </header>
+<% title = 'Projeto' %>
 
-  <!-- Tarefas do Projeto -->
-  <main class="flex-1 p-6 space-y-6">
-    <% if (tarefas && tarefas.length > 0) { %>
-      <% tarefas.forEach(tarefa => { %>
-        <div class="bg-cartao p-4 rounded-lg shadow hover:shadow-xl transition-all duration-300">
-          <h2 class="text-xl font-semibold text-white"><%= tarefa.nome %></h2>
-          <p class="text-prata text-sm"><%= tarefa.descricao %></p>
-        </div>
-      <% }) %>
-    <% } else { %>
-      <p class="text-center text-gray-400">Nenhuma tarefa encontrada neste projeto.</p>
-    <% } %>
-  </main>
+<section class="max-w-6xl mx-auto">
+  <h1 class="text-3xl font-bold text-white mb-8">Projeto: <%= projetoNome || 'Sem nome' %></h1>
 
-  <!-- Rodapé -->
-  <footer class="p-4 text-center text-xs text-gray-500">
-    Task Manager • Projeto View
-  </footer>
-</body>
-</html>
+  <% if (tarefas && tarefas.length > 0) { %>
+    <% tarefas.forEach(tarefa => { %>
+      <div class="bg-cartao p-4 rounded-lg shadow hover:shadow-xl transition-all duration-300 mb-4">
+        <h2 class="text-xl font-semibold text-white"><%= tarefa.nome %></h2>
+        <p class="text-prata text-sm mt-1"><%= tarefa.descricao %></p>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p class="text-center text-gray-400">Nenhuma tarefa encontrada neste projeto.</p>
+  <% } %>
+</section>

@@ -2,48 +2,50 @@ const express = require('express');
 const router = express.Router();
 const tarefaModel = require('../models/tarefaModel');
 
-// Página inicial com links
+// Página inicial
 router.get('/', (req, res) => {
-  res.render('index'); // Renderiza index.ejs
+  res.render('menu', { title: 'Menu Principal' });
 });
 
 // Página de tarefas
 router.get('/tarefas', (req, res) => {
-  res.render('tarefas');
+  res.render('tarefas', { title: 'Tarefas' });
 });
 
 // Dashboard
 router.get('/dashboard', (req, res) => {
-  res.render('dashboard');
+  res.render('dashboard', { title: 'Dashboard' });
 });
 
 // Editor - aceita id opcional
 router.get('/editor/:id?', (req, res) => {
   const { id } = req.params;
-  res.render('editor', { id });
+  res.render('editor', { id, title: 'Editor de Blocos' });
 });
 
 // Tags e categorias
 router.get('/tags', (req, res) => {
-  res.render('tags');
+  res.render('tags', { title: 'Tags & Categorias' });
 });
 
-// Modo foco - aceita id opcional
+// Modo foco
 router.get('/foco/:id?', (req, res) => {
   const { id } = req.params;
-  res.render('focus', { id });
+  res.render('foco', { id, title: 'Modo Foco' });
 });
 
-// Visualização de projeto (com lista de tarefas)
+// Visualização de projeto
 router.get('/projeto/:id?', async (req, res) => {
   try {
     const tarefas = await tarefaModel.listarTarefas();
     res.render('projeto', {
       projetoNome: 'Meu Projeto Exemplo',
-      tarefas
+      tarefas,
+      title: 'Projeto'
     });
   } catch (err) {
-    res.status(500).send('Erro ao carregar a página de projeto.');
+    console.error(err);
+    res.status(500).render('500', { title: 'Erro no Projeto' });
   }
 });
 
@@ -53,10 +55,12 @@ router.get('/tarefas/:id', async (req, res) => {
     const { id } = req.params;
     const tarefas = await tarefaModel.listarTarefas();
     const tarefa = tarefas.find(t => t.id == id);
-    if (!tarefa) return res.status(404).send("Tarefa não encontrada");
-    res.render('tarefa', { tarefa });
+    if (!tarefa) return res.status(404).render('404', { title: 'Tarefa não encontrada' });
+
+    res.render('tarefa', { tarefa, title: tarefa.nome });
   } catch (err) {
-    res.status(500).send("Erro ao carregar a página de tarefa.");
+    console.error(err);
+    res.status(500).render('500', { title: 'Erro ao carregar tarefa' });
   }
 });
 
